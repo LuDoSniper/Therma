@@ -1,9 +1,11 @@
 import express from "express";
-import { router } from "./routes/site.routes.js";
+import { fileURLToPath } from "node:url";
 
 export const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded());
 
-app.use("/", router);
+app.use(express.static(
+    fileURLToPath(new URL("../../public/", import.meta.url))
+));

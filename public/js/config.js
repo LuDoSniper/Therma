@@ -1,3 +1,3 @@
-export const WIDTH = 5;
-export const HEIGHT = 5;
+export const WIDTH = 128;
+export const HEIGHT = 72;
 export const DIFFUSION = 0.12
