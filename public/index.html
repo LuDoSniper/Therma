@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080d16">
+  <meta name="description" content="Interface de simulation thermique en deux dimensions.">
+  <title>Therma — Simulation thermique</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <!-- Panneau rétractable sans JavaScript : coché = ouvert. -->
+  <input type="checkbox" id="sidebar-toggle" class="sidebar-toggle" checked>
+
+  <div class="app-shell">
+    <main class="workspace">
+      <header class="topbar">
+        <a class="brand" href="#simulation" aria-label="Therma, aller à la simulation">
+          <span class="brand-icon" aria-hidden="true">
+            <svg viewBox="0 0 32 32" fill="none"><path d="M6 23 13 9l6 14 7-14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/><circle cx="26" cy="23" r="3" fill="currentColor"/></svg>
+          </span>
+          <span class="brand-copy"><strong>therma<span>.</span></strong><small>SIMULATION STUDIO</small></span>
+        </a>
+
+        <div class="topbar-center" aria-hidden="true">
+          <span class="topbar-divider"></span>
+          <span>Environnement de calcul</span>
+          <span class="topbar-slash">/</span>
+          <strong>Thermique 2D</strong>
+        </div>
+
+        <div class="topbar-actions">
+          <span class="workspace-tag"><span class="tag-dot"></span> ESPACE DE TRAVAIL</span>
+          <button id="fullscreenButton" class="panel-toggle fullscreen-toggle" type="button"
+                  aria-label="Activer le plein écran" aria-pressed="false" title="Passer en plein écran">
+            <svg class="icon-enter" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M8 3H4a1 1 0 0 0-1 1v4M16 3h4a1 1 0 0 1 1 1v4M3 16v4a1 1 0 0 0 1 1h4M21 16v4a1 1 0 0 1-1 1h-4"/>
+            </svg>
+            <svg class="icon-exit" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M3 8h5V3M21 8h-5V3M3 16h5v5M21 16h-5v5"/>
+            </svg>
+          </button>
+          <label class="panel-toggle topbar-panel-toggle" for="sidebar-toggle" title="Afficher ou masquer les paramètres" aria-label="Afficher ou masquer le panneau de paramètres">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="2.5"/><path d="M15.5 4.5v15"/></svg>
+          </label>
+        </div>
+      </header>
+
+      <section class="simulation-view" aria-label="Zone de simulation thermique">
+        <div class="view-heading">
+          <div>
+            <p class="eyebrow"><span class="eyebrow-line"></span> ESPACE DE SIMULATION <span class="muted">/ 01</span></p>
+            <h1>Champ thermique <span>2D</span></h1>
+          </div>
+          <div class="view-tags" aria-label="Type de visualisation">
+            <span class="view-tag">CANVAS</span>
+            <span class="view-tag view-tag-accent"><span class="mini-square"></span> VISUALISATION</span>
+          </div>
+        </div>
+
+        <div class="canvas-frame">
+          <!-- Ton JavaScript dessinera directement dans ce canvas. -->
+          <canvas id="simulation" aria-label="Simulation thermique en deux dimensions">
+            Votre navigateur ne prend pas en charge Canvas.
+          </canvas>
+
+          <!-- Repères décoratifs. Ils n'interceptent pas les interactions. -->
+          <span class="frame-corner corner-top-left" aria-hidden="true"></span>
+          <span class="frame-corner corner-top-right" aria-hidden="true"></span>
+          <span class="frame-corner corner-bottom-left" aria-hidden="true"></span>
+          <span class="frame-corner corner-bottom-right" aria-hidden="true"></span>
+
+          <div class="canvas-watermark" aria-hidden="true">
+            <span class="watermark-icon">✳</span>
+            <span>THERMAL FIELD <small>READY FOR RENDER</small></span>
+          </div>
+
+          <div class="canvas-badge" aria-hidden="true"><span class="canvas-badge-dot"></span> ZONE DE CALCUL</div>
+        </div>
+
+        <div class="view-footer">
+          <div class="temperature-legend" aria-label="Échelle visuelle de température, du froid vers le chaud">
+            <span>FROID</span>
+            <span class="legend-gradient"></span>
+            <span>CHAUD</span>
+          </div>
+          <span class="view-footer-note">Affichage contrôlé par votre moteur de simulation</span>
+        </div>
+      </section>
+
+      <footer class="workspace-footer">
+        <span>THERMA <span class="footer-separator">/</span> VISUALISATION NUMÉRIQUE</span>
+        <span class="footer-right">INTERFACE 01 <span class="footer-separator">•</span> 2D FIELD</span>
+      </footer>
+    </main>
+
+    <!-- Cliquer hors du panneau le ferme sur mobile. -->
+    <label class="sidebar-backdrop" for="sidebar-toggle" aria-label="Fermer le panneau"></label>
+
+    <aside class="sidebar" aria-label="Paramètres et commandes de simulation">
+      <div class="sidebar-header">
+        <div class="sidebar-heading">
+          <span class="sidebar-kicker">CONSOLE DE CONTRÔLE <span>/ 01</span></span>
+          <h2>Paramètres</h2>
+        </div>
+        <label class="panel-toggle sidebar-close" for="sidebar-toggle" title="Replier le panneau" aria-label="Replier le panneau">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m14 7-5 5 5 5"/><path d="M20 4v16"/></svg>
+        </label>
+      </div>
+
+      <div class="sidebar-scroll">
+        <section class="generation-card" aria-labelledby="generation-label">
+          <div class="generation-topline">
+            <span class="section-overline" id="generation-label">GÉNÉRATION ACTUELLE</span>
+            <span class="generation-pulse" aria-hidden="true"><span></span> COMPTEUR</span>
+          </div>
+          <!-- L'élément #generation pourra être mis à jour par ton JS. -->
+          <div class="generation-number"><output id="generation">0</output><span class="generation-unit">GEN.</span></div>
+          <div class="generation-bottomline"><span id="simulation-status">En attente de démarrage</span><span class="status-mark" aria-hidden="true"></span></div>
+        </section>
+
+        <section class="control-section" aria-labelledby="control-title">
+          <div class="section-header"><h3 id="control-title">Exécution</h3><span>01 — ACTIONS</span></div>
+          <div class="transport-controls">
+            <!-- Branche ces IDs sur les événements de ton moteur JavaScript. -->
+            <button id="playButton" class="transport-button transport-play" type="button" title="Démarrer la simulation">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z"/></svg>
+              <span>Play</span>
+            </button>
+            <button id="pauseButton" class="transport-button" type="button" title="Mettre en pause">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="7" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+              <span>Pause</span>
+            </button>
+            <button id="resetButton" class="transport-button" type="button" title="Réinitialiser la simulation">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 11a8 8 0 1 1 2.5 6"/><path d="M4 4v7h7"/></svg>
+              <span>Reset</span>
+            </button>
+          </div>
+        </section>
+
+        <div class="sidebar-rule"></div>
+
+        <section class="control-section" aria-labelledby="thermal-title">
+          <div class="section-header"><h3 id="thermal-title">Propriétés thermiques</h3><span>02 — RÉGLAGES</span></div>
+          <p class="section-description">Champs prêts à être connectés à votre modèle physique.</p>
+
+          <div class="form-field">
+            <div class="field-heading"><label for="source-temperature">Température initiale</label><span class="field-hint">SOURCE</span></div>
+            <div class="number-control"><input id="source-temperature" name="sourceTemperature" type="number" value="80" step="1" min="-273.15"><span>°C</span></div>
+          </div>
+
+          <div class="form-field slider-field">
+            <div class="field-heading"><label for="diffusion">Diffusivité</label><span class="field-hint">D</span></div>
+            <input id="diffusion" name="diffusion" class="range-input" type="range" min="0" max="100" value="65" step="1">
+            <div class="range-ends"><span>FAIBLE</span><span>ÉLEVÉE</span></div>
+          </div>
+
+          <div class="form-field slider-field">
+            <div class="field-heading"><label for="dissipation">Dissipation thermique</label><span class="field-hint">λ</span></div>
+            <input id="dissipation" name="dissipation" class="range-input" type="range" min="0" max="100" value="22" step="1">
+            <div class="range-ends"><span>FAIBLE</span><span>ÉLEVÉE</span></div>
+          </div>
+        </section>
+
+        <div class="sidebar-rule"></div>
+
+        <section class="control-section" aria-labelledby="calculation-title">
+          <div class="section-header"><h3 id="calculation-title">Calcul numérique</h3><span>03 — MOTEUR</span></div>
+          <div class="form-grid">
+            <div class="form-field">
+              <label class="standalone-label" for="time-step">Pas de temps</label>
+              <div class="number-control"><input id="time-step" name="timeStep" type="number" min="0.001" step="0.01" value="0.10"><span>Δt</span></div>
+            </div>
+            <div class="form-field">
+              <label class="standalone-label" for="grid-size">Maillage</label>
+              <select id="grid-size" name="gridSize">
+                <option value="64">64 × 64</option>
+                <option value="128" selected>128 × 128</option>
+                <option value="256">256 × 256</option>
+                <option value="512">512 × 512</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <div class="sidebar-note"><span class="note-symbol">i</span><p>Ces contrôles sont visuels pour le moment. Associez-les à votre JavaScript pour piloter la simulation.</p></div>
+      </div>
+
+      <div class="sidebar-footer"><span class="sidebar-footer-mark"></span><span>THERMA CONTROL SYSTEM</span><span class="sidebar-footer-version">V 0.1</span></div>
+    </aside>
+  </div>
+
+  <!-- Uniquement pour le plein écran natif. Le rendu du canvas reste géré par ton JS. -->
+  <script>
+    const fullscreenButton = document.getElementById("fullscreenButton");
+    const appShell = document.querySelector(".app-shell");
+
+    const updateFullscreenButton = () => {
+      const active = document.fullscreenElement === appShell;
+      fullscreenButton.setAttribute("aria-pressed", String(active));
+      fullscreenButton.setAttribute("aria-label", active ? "Quitter le plein écran" : "Activer le plein écran");
+      fullscreenButton.title = active ? "Quitter le plein écran" : "Passer en plein écran";
+    };
+
+    fullscreenButton.addEventListener("click", async () => {
+      try {
+        if (document.fullscreenElement) {
+          await document.exitFullscreen();
+        } else {
+          await appShell.requestFullscreen();
+        }
+      } catch (error) {
+        console.warn("Le plein écran n'est pas disponible dans ce navigateur.", error);
+      }
+    });
+
+    document.addEventListener("fullscreenchange", updateFullscreenButton);
+  </script>
+</body>
+</html>
