@@ -1,4 +1,4 @@
-import { WIDTH, HEIGHT, DIFFUSION, AMBIENT_TEMP, COOLING, MAX_TEMP, MIN_TEMP } from "./config.js";
+import { WIDTH, HEIGHT, DIFFUSION, AMBIENT_TEMP, COOLING, MAX_TEMP, MIN_TEMP, MAX_RADIUS, MIN_RADIUS } from "./config.js";
 
 export const createGrid = () => {
     return new Float32Array(WIDTH * HEIGHT);
@@ -73,3 +73,24 @@ export const nextGeneration = (grid, sources) => {
     }
     return newGrid;
 }
+
+export const spawnRandomSource = (sources) => {
+    if (Math.random() < 0.03) {
+        const x = Math.floor(Math.random() * WIDTH);
+        const y = Math.floor(Math.random() * HEIGHT);
+        const radius = Math.floor(Math.random() * (MAX_RADIUS - MIN_RADIUS + 1)) + MIN_RADIUS;
+
+        for (let dy = -radius; dy < radius; dy++) {
+            for (let dx = -radius; dx < radius; dx++) {
+                if (dx * dx + dy * dy <= radius) {
+                    const nx = x + dx;
+                    const ny = y + dy;
+
+                    nx >= 0 && nx < WIDTH && ny >= 0 && ny < HEIGHT
+
+                    setSource(sources, nx, ny, 180);
+                }
+            }
+        }
+    }
+};

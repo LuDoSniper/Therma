@@ -1,6 +1,6 @@
 import { WIDTH, HEIGHT } from "./config.js";
 import { renderMap } from "./renderer.js";
-import { createGrid, createSources, nextGeneration, setCell, setSource } from "./simulation.js";
+import { createGrid, createSources, nextGeneration, setSource, spawnRandomSource } from "./simulation.js";
 
 const canvas = document.getElementById("simulation");
 const ctx = canvas.getContext("2d");
@@ -17,8 +17,11 @@ setSource(sources, 64, 36, 180);
 renderMap(ctx, grid)
 
 const step = () => {
+    spawnRandomSource(sources);
+
     grid = nextGeneration(grid, sources);
     gen++;
+
     renderMap(ctx, grid);
     updateGenerationDisplay();
 }
@@ -34,7 +37,9 @@ document.getElementById("pauseButton").addEventListener('click', () => {
 });
 document.getElementById("resetButton").addEventListener('click', () => {
     grid = createGrid();
+    sources = createSources();
     gen = 0;
+
     renderMap(ctx, grid)
     updateGenerationDisplay();
 });
