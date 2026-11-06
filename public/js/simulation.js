@@ -1,4 +1,4 @@
-import { WIDTH, HEIGHT, DIFFUSION } from "./config.js";
+import { WIDTH, HEIGHT, DIFFUSION, AMBIENT_TEMP, COOLING } from "./config.js";
 
 export const createGrid = () => {
     return new Float32Array(WIDTH * HEIGHT);
@@ -29,10 +29,16 @@ export const getNeighbors = (grid, x, y) => {
 };
 
 export const computeCell = (grid, x, y) => {
-    const t = getCell(grid, x, y);
+    let t = getCell(grid, x, y);
     const ns = getNeighbors(grid, x, y);
 
-    return t + DIFFUSION * (ns[0] + ns[1] + ns[2] + ns[3] - 4 * t);
+    // Diffusion
+    t = t + DIFFUSION * (ns[0] + ns[1] + ns[2] + ns[3] - 4 * t);
+
+    // Cooling
+    t = t - COOLING * (t - AMBIENT_TEMP);
+
+    return Math.max(0, Math.min(100, t))
 };
 
 export const nextGeneration = (grid) => {

@@ -30,13 +30,12 @@ document.getElementById("playButton").addEventListener('click', () => {
 document.getElementById("pauseButton").addEventListener('click', () => {
     running = false;
 });
-
-const frame = (timestamp) => {
-    console.log(timestamp);
-    requestAnimationFrame(frame);
-};
-
-requestAnimationFrame(frame);
+document.getElementById("resetButton").addEventListener('click', () => {
+    grid = createGrid();
+    gen = 0;
+    renderMap(ctx, grid)
+    updateGenerationDisplay();
+});
 
 const tick = setInterval(() => {
     if (running) step();
