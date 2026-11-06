@@ -1,4 +1,4 @@
-import { HEIGHT, WIDTH } from "./config.js";
+import { HEIGHT, MAX_TEMP, MIN_TEMP, WIDTH } from "./config.js";
 import { getCell } from "./simulation.js";
 
 export const renderMap = (ctx, grid) => {
@@ -9,10 +9,10 @@ export const renderMap = (ctx, grid) => {
             const t = getCell(grid, x, y);
             const index = (y * WIDTH + x) * 4;
 
-            image.data[index] = 255 * (t / 100)         // R
-            image.data[index + 1] = 0                   // G
-            image.data[index + 2] = 255 * (1 - t / 100) // B
-            image.data[index + 3] = 255                 // O
+            image.data[index] = 255 * (t / MAX_TEMP)         // R
+            image.data[index + 1] = MIN_TEMP                 // G
+            image.data[index + 2] = 255 * (1 - t / MAX_TEMP) // B
+            image.data[index + 3] = 255                      // O
         }
     }
     ctx.putImageData(image, 0, 0);

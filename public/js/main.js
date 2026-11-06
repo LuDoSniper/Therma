@@ -1,6 +1,6 @@
 import { WIDTH, HEIGHT } from "./config.js";
 import { renderMap } from "./renderer.js";
-import { createGrid, nextGeneration, setCell } from "./simulation.js";
+import { createGrid, createSources, nextGeneration, setCell } from "./simulation.js";
 
 const canvas = document.getElementById("simulation");
 const ctx = canvas.getContext("2d");
@@ -9,13 +9,15 @@ canvas.width = WIDTH;
 canvas.height = HEIGHT;
 
 let grid = createGrid();
-setCell(grid, 64, 36, 100);
-renderMap(ctx, grid)
+let sources = createSources();
 let gen = 0;
 let running = false;
 
+setCell(grid, 64, 36, 100);
+renderMap(ctx, grid)
+
 const step = () => {
-    grid = nextGeneration(grid);
+    grid = nextGeneration(grid, sources);
     gen++;
     renderMap(ctx, grid);
     updateGenerationDisplay();

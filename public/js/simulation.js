@@ -1,11 +1,19 @@
-import { WIDTH, HEIGHT, DIFFUSION, AMBIENT_TEMP, COOLING } from "./config.js";
+import { WIDTH, HEIGHT, DIFFUSION, AMBIENT_TEMP, COOLING, MAX_TEMP, MIN_TEMP } from "./config.js";
 
 export const createGrid = () => {
     return new Float32Array(WIDTH * HEIGHT);
 };
 
+export const createSources = () => {
+    return new Uint16Array(WIDTH * HEIGHT);
+};
+
 export const getCell = (grid, x, y) => {
     return grid[y * WIDTH + x];
+};
+
+export const getSource = (sources, x, y) => {
+    return sources[y * WIDTH + x];
 };
 
 export const setCell = (grid, x, y, value) => {
@@ -28,9 +36,16 @@ export const getNeighbors = (grid, x, y) => {
     return neighbors;
 };
 
-export const computeCell = (grid, x, y) => {
+export const computeCell = (grid, sources, x, y) => {
     let t = getCell(grid, x, y);
+    let d = getSource(sources, x, y)
     const ns = getNeighbors(grid, x, y);
+
+    if (d > 0) {
+        t = MAX_TEMP;
+        d--;
+        return;
+    }
 
     // Diffusion
     t = t + DIFFUSION * (ns[0] + ns[1] + ns[2] + ns[3] - 4 * t);
@@ -38,14 +53,14 @@ export const computeCell = (grid, x, y) => {
     // Cooling
     t = t - COOLING * (t - AMBIENT_TEMP);
 
-    return Math.max(0, Math.min(100, t))
+    return Math.max(MIN_TEMP, Math.min(MAX_TEMP, t));
 };
 
-export const nextGeneration = (grid) => {
+export const nextGeneration = (grid, sources) => {
     let newGrid = createGrid();
     for (let y = 0; y < HEIGHT; y++) {
         for (let x = 0; x < WIDTH; x++) {
-            setCell(newGrid, x, y, computeCell(grid, x, y));
+            setCell(newGrid, x, y, computeCell(grid, sources, x, y));
         }
     }
     return newGrid;
