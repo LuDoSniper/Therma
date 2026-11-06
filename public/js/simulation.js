@@ -20,6 +20,14 @@ export const setCell = (grid, x, y, value) => {
     grid[y * WIDTH + x] = value;
 };
 
+export const setSource = (sources, x, y, duration) => {
+    sources[y * WIDTH + x] = duration;
+}
+
+export const decrementSource = (sources, x, y) => {
+    sources[y * WIDTH + x]--;
+};
+
 export const getNeighbors = (grid, x, y) => {
     const cell = getCell(grid, x, y);
 
@@ -43,8 +51,8 @@ export const computeCell = (grid, sources, x, y) => {
 
     if (d > 0) {
         t = MAX_TEMP;
-        d--;
-        return;
+        decrementSource(sources, x, y);
+        return t;
     }
 
     // Diffusion

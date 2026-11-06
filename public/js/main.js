@@ -1,6 +1,6 @@
 import { WIDTH, HEIGHT } from "./config.js";
 import { renderMap } from "./renderer.js";
-import { createGrid, createSources, nextGeneration, setCell } from "./simulation.js";
+import { createGrid, createSources, nextGeneration, setCell, setSource } from "./simulation.js";
 
 const canvas = document.getElementById("simulation");
 const ctx = canvas.getContext("2d");
@@ -13,7 +13,7 @@ let sources = createSources();
 let gen = 0;
 let running = false;
 
-setCell(grid, 64, 36, 100);
+setSource(sources, 64, 36, 180);
 renderMap(ctx, grid)
 
 const step = () => {
@@ -41,4 +41,4 @@ document.getElementById("resetButton").addEventListener('click', () => {
 
 const tick = setInterval(() => {
     if (running) step();
-}, 150);
+}, 50);
